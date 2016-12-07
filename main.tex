@@ -1,0 +1,275 @@
+%\documentclass[twoside]{pwrthesis}
+\documentclass[twoside]{iisthesis}
+% ---
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{tocloft}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{url}
+\usepackage{pgfplots, pgfplotstable}
+\selectlanguage{english}
+% Dodane przeze mnie d
+\usepackage{fancyvrb} % dla srodowiska Verbatim
+\usepackage{color}
+\usepackage{lscape}
+\hypersetup{
+    colorlinks,
+    linkcolor={black!50!black},
+    citecolor={black!50!black},
+    urlcolor={black!80!black}
+}
+
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
+
+\lstset{
+  language=XML,
+   literate={ć}{{\'c}}1
+}
+\renewcommand*{\lstlistingname}{Kod źródłowy}
+% definicje kolorow
+\definecolor{ciemnoSzary}{rgb}{0.15,0.15,0.15}
+\definecolor{szary}{rgb}{0.5,0.5,0.5}
+\definecolor{jasnoSzary}{rgb}{0.2,0.2,0.2}
+
+% Konfiguracja verbatima
+\fvset{
+	frame=single,
+	numbers=left,
+	fontsize=\footnotesize,
+	numbersep=12pt,
+%	framerule=.5mm,
+	rulecolor=\color{ciemnoSzary},
+%	fillcolor=\color{jasnoSzary},
+	framesep=4pt,
+	stepnumber=1,
+	numberblanklines=false,
+	tabsize=2,
+%	formatcom=\color{szary}
+}
+\newcommand{\listequationsname}{Spis wzorów}
+\newcommand{\equationcaption}[1]{\begin{flushright}\emph{#1}\end{flushright}}
+\newcommand{\rightcaption}[1]{\begin{flushright}\emph{#1}\end{flushright}}
+\newlistof{myequations}{equ}{\listequationsname}
+\newcommand{\myequations}[1]{%
+\addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
+
+\newcommand{\listofmyalgorithmsname}{Spis algorytmów}
+\newlistof{myalgorithm}{algo}{\listofmyalgorithmsname}
+\newcommand{\myalgorithm}[1]{%
+\addcontentsline{algo}{myalgorithm}{\protect\numberline{\thealgorithm}#1}\par}
+
+
+\newcommand{\listofmyfiguresname}{Spis rysunków}
+\newlistof{myfigure}{figu}{\listofmyfiguresname}
+\newcommand{\myfigure}[1]{%
+\addcontentsline{figu}{myfigure}{\protect\numberline{\thefigure}#1}\par}
+
+\floatname{algorithm}{Algorytm}
+
+\newtheorem{mydef}{Definicja}
+
+
+
+\begin{document}
+
+
+\newcommand{\resultChart}[7][140]{
+\def\dataS{{#2}}
+	\begin{figure}[H]
+	
+\centering
+
+\begin{center}
+\begin{tikzpicture}
+ 
+\begin{axis}[
+ybar,
+bar width=20,
+legend style={at={(0.5,-0.25)},
+anchor=north,legend columns=-1},
+ylabel={Wartość miary},
+symbolic x coords={\dataS},
+xtick=data,
+height=  {#1},
+width=0.8\textwidth,
+ymin=0, ytick={0,0.5,1},
+ymax=1.5,
+nodes near coords,
+nodes near coords align={vertical},
+]
+\addplot coordinates { (\dataS,{#3}) };
+\addplot coordinates {(\dataS,{#4}) };
+\addplot coordinates { (\dataS,{#5}) };
+\legend{Recall,Precission,F1-Score}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\caption{{#6}}
+\myfigure{{#6}}
+\label{{#7}}
+\end{figure}
+}
+
+
+\pgfkeys{/pgf/number format/use comma}
+\pgfkeys{/pgf/number format/.cd, set thousands separator={}}%
+\nocite{*}
+\title{ TITLE }
+\titleEN{ TITLE EN}
+\shortTitle{SHORT TITLE}
+\author{Adrian Bajdiuk }
+\advisor{dr Radosław Michalski}
+\instituteLogo{logos/pwr}
+\slowaKluczowe{KEYWORDS}
+
+\date{\number\the\year}
+
+% Wstawienie abstractu pracy
+	%\input {abstract}
+
+\abstractSH{SHORT ABSTRACT}
+
+\abstractPL{
+ABSTRACT PL
+}
+\abstractEN{
+ABSTRACT EN
+}
+
+\maketitle
+\textpages
+
+
+\graphicspath{ {img/} }
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\chapter{Introduction}
+\section{Background}
+The electric power grid is crucial part of economic and security systems. In fact nearly every branch of the daily life in modern societies operates using every sorts of energy with electric at the top. Every disruption to power transmission systems may cause tremendous economical and social losses for technologically advanced societies through strong dependencies on it of other critical infrastructures like telecommunications and transportation~\cite{vanEaten10}. 
+Power transmission systems key importance to modern societies encourages to further investigate electric power grids reliability and  resiliency through development of new assessment methods and strategies to mitigate cascading blackouts.
+\\
+From technological point of view, the electric power transmission grid involves many of present knowledge areas contributing to its design, operations and analysis. This involvement caused a tendency for more local analysis, focused only on elements important to interesting parties, losing the big picture of a problem \cite{carreras2001},\cite{Hiskens1997}. Thanks to advances in Complex Network Analysis and Graph Theory\cite{Watts1998},\cite{Barabasi1997} a step forward global approach was taken\cite{Koc2014},\cite{Asztalos2014}.
+
+\section{Dissertation goal}
+
+following paper instead of focusing on finding elements with the greatest impact in case of failure , tries to find out subset of elements which improvement helps to mitigate cascade in case of described failure. 
+
+\section{Outline}   
+
+describe following chapters
+
+\chapter{Failures cascade in power grid - model}
+
+\section{Power grid preliminaries}
+
+\section{Simple DC power flow model}
+
+\section{Cascade propagation model}
+
+\section{Complex Network preliminaries}
+
+\chapter{Experiment}
+
+\section{Overview}
+
+\section{Cascade trigger selection}
+
+\section{Grid elements selection methods for improvement}
+
+\chapter{Results discussion}
+
+\chapter{Conclusion}
+
+
+\def\alghoritm1{Alghoritm 1}
+\begin{algorithm}
+\caption{\alghoritm1}
+\myalgorithm{\alghoritm1}
+\label{aq:algStat}
+\begin{algorithmic}
+\STATE $T \leftarrow \text{text under analysis}$
+\FOR{each word $w \in T$}
+    \STATE $S_{w}\leftarrow FIND\_SENTIMENT(w) $
+    \IF {$S_{w}=POSITIVE$}
+        \STATE $Sentiment[POSITIVE]++$
+    \ELSIF{$S_{w}=NEGATIVE$}
+        \STATE $Sentiment[NEGATIVE]++$
+    \ELSE 
+        \STATE $Sentiment[NEUTRAL]++$
+    \ENDIF
+\ENDFOR
+%\STATE $x\in\{POSITIVE,NEGATIVE,NEUTRAL\}$
+\RETURN $\arg\max_x Sentiment[x]$
+\end{algorithmic}
+\end{algorithm}
+
+
+\def\schema1{Schema 1}
+\begin{figure}[ht]
+\caption{\schema1}
+\myfigure{\schema1}
+\label{fig:kdb}
+\begin{center}
+    <GRAPHIC>
+\end{center}
+\end{figure}
+
+\section{Section 2}
+
+\subsection{Subsection 1}
+
+\subsubsection{Subsubsection 1}
+
+\begin{mydef}
+\textbf{Definicja} - pierwsza
+\end{mydef}
+
+
+
+\clearpage
+\appendix
+\chapter{Appendix 1}
+
+
+\clearpage
+\pagestyle{plain}
+\listofmyfigure
+\listofmyequations
+\listofmyalgorithm
+\clearpage
+
+%\bibliographystyle{apalike}%Used BibTeX style is unsrt
+
+
+\bibliography{bibliography}
+\bibliographystyle{iisthesis}
+
+\end{document}
+

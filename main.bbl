@@ -1,0 +1,41 @@
+\begin{thebibliography}{1}
+
+\bibitem{Asztalos2014}
+A.~Assztalos, S.~Sreenivasan B. K. S. G.~K.
+\newblock Cascading failures in spatially-embedded random networks.
+\newblock {\em PLoS ONE}, 9(1), 2014.
+
+\bibitem{Barabasi1997}
+A.~L.~Barabasi R.~A.
+\newblock Emergence of scalling in random networks.
+\newblock {\em Science}, Vol.286, 1997.
+
+\bibitem{carreras2001}
+B.~Carreras, V.~Lynch M. S. I. D. D.~N.
+\newblock Modeling blackout dynamics in power transmission networks with simple
+  structure.
+\newblock {\em IEEE Computer Society}, (HICSS-342) Vol.2, 2001.
+
+\bibitem{Watts1998}
+D.~J.~Watts S. H.~S.
+\newblock Collective dynamics of small-world networks.
+\newblock {\em Nature}, Vol.393(no. 6684), 1998.
+
+\bibitem{Hiskens1997}
+I.~A.~Hiskens M.~A.
+\newblock Analysis of the nordel power grid disturbance of january 1, 1997
+  using trajectory sensitivities.
+\newblock {\em IEEE Transactions on Power Systems}, Vol.14(no. 3), 1997.
+
+\bibitem{vanEaten10}
+M.~Van~Eaten, A.~Nieuwenhuijs E. L. M. K. E.~C.
+\newblock The state and the threat of cascading failure across critical
+  infrastructures.
+\newblock {\em Public Administration}, 89(2), 2011.
+
+\bibitem{Koc2014}
+Y.~Koc, M.~Warnier R. K. F.~B.
+\newblock Structural vulnerability assessment of electric power grids.
+\newblock 2014.
+
+\end{thebibliography}
