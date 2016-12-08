@@ -21,21 +21,35 @@ D.~J.~Watts S. H.~S.
 \newblock Collective dynamics of small-world networks.
 \newblock {\em Nature}, Vol.393(no. 6684), 1998.
 
+\bibitem{VanHertem2006}
+D.Van~Hertem, J.~Verboomen K.~P.
+\newblock Usefulness of dc power flow for active power flow analysis with flow
+  controlling devices.
+\newblock {\em Proc. of the 8th IEEE Int. Conf. on AC and DC Power
+  Transmission}, 2006.
+
 \bibitem{Hiskens1997}
 I.~A.~Hiskens M.~A.
 \newblock Analysis of the nordel power grid disturbance of january 1, 1997
   using trajectory sensitivities.
 \newblock {\em IEEE Transactions on Power Systems}, Vol.14(no. 3), 1997.
 
+\bibitem{Graigner1994}
+J.~Graigner W.~S.
+\newblock {\em Power System Analysis}.
+\newblock McGraw-Hill, New York, 1994.
+
 \bibitem{vanEaten10}
 M.~Van~Eaten, A.~Nieuwenhuijs E. L. M. K. E.~C.
 \newblock The state and the threat of cascading failure across critical
-  infrastructures.
+  infrastructures: the implications of empirical evidence from media incident
+  reports.
 \newblock {\em Public Administration}, 89(2), 2011.
 
 \bibitem{Koc2014}
 Y.~Koc, M.~Warnier R. K. F.~B.
 \newblock Structural vulnerability assessment of electric power grids.
-\newblock 2014.
+\newblock {\em Proceedings of the 11th IEEE International Conference on
+  Networking, Sensing and Control}, 2014.
 
 \end{thebibliography}

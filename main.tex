@@ -180,33 +180,155 @@ From technological point of view, the electric power transmission grid involves 
 \section{Dissertation goal}
 
 following paper instead of focusing on finding elements with the greatest impact in case of failure , tries to find out subset of elements which improvement helps to mitigate cascade in case of described failure. 
-
+na koniec
 \section{Outline}   
 
 describe following chapters
-
+na koniec
 \chapter{Failures cascade in power grid - model}
 
-\section{Power grid preliminaries}
-
+A power grid consists of three functional parts: buses, lines and generators. Each of them take a part in electricity transmission. Generator are responsible for generating the energy, lines depict interconnections and buses distribute energy. Graph representation of power grid depicts buses and generators as vertices while lines as edges. In real systems existence of parallel lines between the same pair of nodes is not odd, but for the sake of Graph Theory validity parallel lines are depicted as one edge.  
+\\
+Physical description of described above system includes several electric properties specifying grid elements. Buses main property are its voltage level  \(V\), and phase \(\theta\) and power load, real part \(P\), imaginary \(Q\). Lines are weighted by admittance, specifically its real part \(g\) and imaginary part \(b\) \cite{VanHertem2006},\cite{Graigner1994}.
 \section{Simple DC power flow model}
+For estimating power flows for each line of the grid this paper uses simplified DC power flow model based on DC power flow equations stated in \cite{Graigner1994}, which is successfully used  as AC power flow equations approximation. Power flow between two buses is a function of admittance, voltage levels and voltage phase differences  of those buses:
+\begin{equation}\label{eq:power}
+	\begin{cases}
+	P_{i,j}=|V_i||V_j|*(g_{i,j}*\cos(\theta_i - \theta_j) + b_{i,j}*\sin(\theta_i - \theta_j)) \\
+	Q_{i,j}=|V_i||V_j|*(g_{i,j}*\sin(\theta_i - \theta_j) - b_{i,j}*\cos(\theta_i - \theta_j))
+	\end{cases}
+\end{equation}
+\\
+Above equations can be simplified due to some observation explained in \cite{Graigner1994}.\\
+Resistance \(r\) of transmission circuits is significantly less than reactance \(x\). Given formula for admittance:
+\begin{equation}
+	y = g +jb = \dfrac{1}{r + jx} 
+\end{equation} 
+
+\[g = \dfrac{r}{r^2 +x^2} = 0\]
+\[b = \dfrac{-x}{r^2 + x^2} = \dfrac{-1}{x}\]
+
+ Applying this conclusion leaves \eqref{eq:power}:
+	\[\begin{cases}
+		P_{i,j}=|V_i||V_j|*( b_{i,j}*\sin(\theta_i - \theta_j)) \\
+		Q_{i,j}=|V_i||V_j|*( b_{i,j}*\cos(\theta_i - \theta_j))
+	\end{cases}\]
+\\
+Angular separation across transmission circuits is small. Meaning difference between voltage phase angles of 2 buses for common case is less than 15 degrees, reaching maximum at 30 degrees. Since voltage phases difference appears in trigonometric functions \(sin\),\(cos\), and when theirs argument is considered as small angle theirs respective values are the argument itself and \(0\). After taking into account this observation into \eqref{eq:power}:
+	\[\begin{cases}
+	P_{i,j}=|V_i||V_j|*( b_{i,j}*(\theta_i - \theta_j)) \\
+	Q_{i,j}=|V_i||V_j|*( -b_{i,j})
+	\end{cases}\]
+	\\
+Lets rewrite reactive power \(Q\) in terms of single bus \(i\):
+	\[
+	Q_{i}=-|V_i|^2 * (b_{i} + \sum_{i=1,i\neq j}^{N}-b_{i,j})-\sum_{i=1,i\neq j}^{N}(-|V_i||V_j|b_{i,j})	
+    \]
+	\begin{equation}\label{eq:reactive_sum}
+	Q_{i}=-|V_i|^2 * b_{i} - \sum_{i=1,i\neq j}^{N}(|V_i|b_{i,j}(|V_i|-|V_j|))
+	\end{equation}
+The first term corresponds to the reactive power supplied at bus \(i\), and the second to reactive power flowing on lines connected to bus \(i\).\\
+Also rewrite real power flow in terms of single bus \(i\)
+	\begin{equation}\label{eq:real_sum}
+	P_{i}=\sum_{i=1,i \neq j}^N(|V_i||V_j|*( b_{i,j}*(\theta_i - \theta_j))) 
+	\end{equation}
+The term corresponds to real power flows on circuits connected to bus \(i\)\\
+As described in \cite{Graigner1994} power flow analysis is build upon per-unit systems. In described context it means all values of voltage levels are only a fraction of base voltage level of the system. In those systems typical operations conditions of voltage magnitudes are between \(0.95\),\(1.05\). Incuring little error in approximation, we can rewrite \eqref{eq:real_sum},\eqref{eq:reactive_sum}:
+	\[\begin{cases}
+	P_{i}=\sum_{i=1,i \neq j}^N( b_{i,j}*(\theta_i - \theta_j)) \\
+	Q_{i}=-b_{i} - \sum_{i=1,i\neq j}^{N}(b_{i,j}(|V_i|-|V_j|))
+	\end{cases}\]
+With recent observations in mind maximum voltage magnitude differences can be calculated as \(0.1\), and maximum voltage phase angles difference in radians as \(0.52\) thus:
+\begin{equation}\label{eq:real_bigger}
+	P_{i}>> Q_{i}
+\end{equation}
+\\
+Since all power injections which are power generation minus power demand, network topology, transmission circuits impedances are known upfront solving power flow problem means calculate voltage phase angles differences matrix using as :
+\[
+	\mathbf{\theta} = \mathbf{B^{-1}}\mathbf{P}
+\]
+And given results incorporation into formula for real power flow on transmission circuit between  \(i\) and \(j\) buses devised from \eqref{eq:power}:
+\[
+P_{i,j} = b_{i,j}*(\theta_{i} - \theta_{j})
+\]
 
 \section{Cascade propagation model}
 
-\section{Complex Network preliminaries}
+The maximum capacity of a line is  determined by thermal properties of transmission circuit and voltage stability. Most common case of voltage stability breakage  is circuits overload caused by high current \(i\) magnitude. It occurs when a capacity threshold is exceeded. Total power flow on line \((i,j)\) is represented by formula:
+\begin{equation}\label{eq:total_power}
+	S_{i,j} = P_{i,j} + jQ_{i,j} = V_i*I_{i,j}
+\end{equation}
+Where \(V_{i}\) is the voltage phasor at bus \(i\), and \(I_{i,j}\) is phasor of current flowing on line \(i,j\). Taking into account \eqref{eq:real_bigger} and fact that in per-unit system voltage magnitudes have values between \(0.95,1.05\) current magnitude on transmission circuit \((i,j)\) can be approximated as:
+\begin{equation}\label{eq:current_magnitude}
+|I_{i,j}| = \dfrac{\sqrt{P_{i,j}^2 + Q_{i,j}}}{|V_{i}|} = \dfrac{\sqrt{P_{i,j}^2}}{|V_{i}|} \approx |P_{i,j}|
+\end{equation}
+\\
+It is common practice to assume deterministic model for power grid elements tripping mechanism \cite{Koc2014},\cite{Asztalos2014}. It assumes that circuit element becomes damaged when its current load \(i_t\)  exceeds its maximum capacity \(c\):
+\begin{equation}\label{eq:overload}
+	|\dfrac{i_t}{c}| > 1
+\end{equation} 
+\\
+Although both articles agree upon this fact, \cite{Koc2014} assumes only edges, meaning lines can be overloaded. Contrary assumption was made in \cite{Asztalos2014}, where only nodes could become damaged.
+This paper takes both assumptions into consideration. Every element on which flow can be calculated is assigned operational threshold, which can be violated causing elements overload. 
+\\
+Grid elements capacity  \(c\) is assumed to be proportional to its load in steady-state, meaning initial state by tolerance parameter \(\beta\):
+\begin{equation}\label{eq:el_capacity}
+	\begin{cases}
+	c_{i,j}=\beta_{i,j} * P_{i,j} \\
+	c_{k} = \beta_k * P_{in,k} 
+	\end{cases}
+\end{equation}  
+with:
+\[
+	P_{in,k}=\sum_{k \neq l , k \subset N_G(k)} \begin{cases}
+	(P_{k,l}), & \mbox{if } P_{k,l} >0 \\ 0
+	\end{cases}
+\]
+Where \(c_{i,j}\)  denotes operational threshold of line between buses \((i,j)\), \(c_k\) threshold of bus \(k\)   , \(P_{in,k}\) load flowing towards bus \(k\) and  \(N_G(k)\)  neighbourhood of bus \(k\).
+\\
+Grid component outage notifies its breaker causing permanent damage. This event incurs changes in power flow distribution balance followed by energy redistribution, which may violate other components operational threshold. Such cascade of failures continues until no more components are overloaded.
+\\
+This mechanism is modelled under 2 assumptions stated due to continuous nature of electricity:
+\begin{itemize}
+	\item Cascade propagation is laminar, meaning in every cascade iteration only one element is deemed overloaded \(el_{i}\).
+	\item After power redistribution, next overloaded element \(el_{i+1}\) is chosen from set of overloaded components  with probability decreasing with distance \(d(el_{i+1},el_i)\).  
+\end{itemize}
 
+obrazki z porpagacja
 \chapter{Experiment}
-
 \section{Overview}
+ogolny zarys badania, postepowanie, uzyte parametry, uzyte zbiory danych
+\section{Complex Network preliminaries}
+This section explains relevant, basic concepts from Complex Network Analysis used in following sections
+A network G(V,E) consists of set of nodes V and connections between them E. Distance between two nodes \(d(u,v)\) is the minimum number of edges required to create a path \(p_{u,v}\) between them. Path refers to a walk between those nodes without revisiting vertices. Path length \(l(p_{u,v})\) in following section is count of visited nodes. Shortest path between vertices \(p^*_{u,v}\) is a minimizer of paths over their lengths. Graph diameter is a maximizer of paths over their lengths. Degree of node \(deg(k)\) is a count of other nodes linked to node \(k\). 
+\\ ADD references !!!\\
+\textit{Centrality} is an indicator of most important nodes within graph. This papers takes use of 2 types of this measure:
+\begin{itemize}
+	\item{\textit{Degree Centrality}}:
+	\begin{equation}\label{eq:d_centr}
+		C_d(v) = deg(v)
+	\end{equation}
+	
+	\item{\textit{Closeness Centrality}}:
+	\begin{equation}\label{eq:c_centr}
+		C_c(v) = \dfrac{1}{\sum_{u\neq v}^{|V|}l(p^*_{u,v})}
+	\end{equation}
+\end{itemize}
+
+\textit{Random walk} \(r_l(k)\), of length \(l\) in a graph G with a start at node \(k\)  in this paper is understood as a path starting at node \(k\) without revisiting vertices with every next node chosen accordingly to uniformly distributed across \(k\) neighbourhood \(N_G(k)\) probability , which length does not exceed \(l\).
+\\
+\textit{Connected Component} of a graph G is its fully connected subgraph, meaning there exists a path for every two nodes in this subgraph. Which is also not linked to any remaining vertices in G. \text{Largest Connected Component} is a maximizer of \textit{Connected Components} by nodes count over entire G.
+\\
 
 \section{Cascade trigger selection}
-
+dlaczego vmaxk
 \section{Grid elements selection methods for improvement}
-
-\chapter{Results discussion}
-
+opis metod
+\section{Dataset description}
+\section{Results discussion}
+to po przegladnieciu wyników
 \chapter{Conclusion}
-
+krytyka wynikow, co mozna wywnioskowac
 
 \def\alghoritm1{Alghoritm 1}
 \begin{algorithm}
